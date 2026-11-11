@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Bianca & Luca • 3 Anos de Amor ❤️</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>❤️</text></svg>">
+</head>
+<body>
+
+  <!-- Barra Superior -->
+  <header>
+    <div class="brand">
+      <span class="brand-icon">💖</span>
+      <h1>Bianca & Luca</h1>
+    </div>
+
+    <!-- Indicador de Memórias Coletadas (3 Anos) & Conquistas & Álbum de Fotos -->
+    <div class="badges-container">
+      <div id="badge-year-1" class="memory-badge">
+        <span>🌿</span> Ano 1
+      </div>
+      <div id="badge-year-2" class="memory-badge">
+        <span>❄️</span> Ano 2
+      </div>
+      <div id="badge-year-3" class="memory-badge">
+        <span>✨</span> Ano 3
+      </div>
+      <button id="btn-open-album" class="album-btn" title="Álbum de Fotos com a Bianca (11 Memórias Especiais)">
+        <span>📸</span> Álbum <span id="album-counter">0</span>/11
+      </button>
+      <button id="btn-achievements" class="achievements-btn" title="Livro de Conquistas dos 3 Anos">
+        <span>🏆</span> <span id="achievements-count">0</span>/<span id="achievements-total">14</span>
+      </button>
+    </div>
+
+    <!-- Contadores de Comidinhas Favoritas, Rosas & Música -->
+    <div class="header-right">
+      <div class="food-counters">
+        <div class="counter-item" title="Rosas do Amor (Colete 3 para presentear o Luca com buquê)">
+          <span>🌹</span> <span id="rose-count">0</span>
+        </div>
+        <div class="counter-item" title="Sushi Coletados">
+          <span>🍣</span> <span id="sushi-count">0</span>
+        </div>
+        <div class="counter-item" title="Brigadeiros Coletados">
+          <span>🍫</span> <span id="brigadeiro-count">0</span>
+        </div>
+      </div>
+
+      <!-- Botão da Música Romântico 2 -->
+      <button id="music-btn" class="music-toggle-btn" title="Romântico 2 - Aka Rasta, Veigh">
+        <div class="equalizer">
+          <span></span><span></span><span></span>
+        </div>
+        <span id="music-btn-text">Música</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Área Principal do Jogo -->
+  <main id="main-view">
+    <!-- Indicador do Cenário Atual e Barra de Atalhos -->
+    <div id="current-area-bar">
+      <span id="current-area-title">Ano 1: O Pedido de Namoro no Restaurante Verde</span>
+      <div id="controls-hint-bar">
+        <span>⌨️ [WASD/Setas] Mover</span>
+        <span>[E] 📸 Interagir/Foto</span>
+        <span>[B] 💋 Beijinho</span>
+        <span>[R] 🌹 Buquê</span>
+        <span>[F] 🍖 Petisco</span>
+        <span>[H] 🤝 Mãos</span>
+        <span>[P] 📸 Álbum</span>
+        <span>[C] 🏆 Conquistas</span>
+      </div>
+    </div>
+
+    <!-- Canvas do Jogo 2D -->
+    <div id="canvas-container">
+      <canvas id="gameCanvas"></canvas>
+    </div>
+
+    <!-- Toast Flutuante de Conquista Desbloqueada -->
+    <div id="achievement-toast" class="achievement-toast">
+      <div class="toast-icon">🏆</div>
+      <div class="toast-content">
+        <div class="toast-title">Conquista Desbloqueada!</div>
+        <div id="toast-desc" class="toast-desc">Chuva de Beijinhos</div>
+      </div>
+    </div>
+
+    <!-- Caixa de Diálogo RPG Estilo Stardew Valley -->
+    <div id="dialogue-box">
+      <div id="dialogue-avatar" class="dialogue-avatar bianca"></div>
+      <div class="dialogue-content">
+        <div id="dialogue-speaker">Bianca</div>
+        <div id="dialogue-text">...</div>
+        <div class="dialogue-hint">Pressione [Espaço], [E] ou toque para continuar ➔</div>
+      </div>
+    </div>
+
+    <!-- Controles Touch para Celular com Atalhos Rápidos -->
+    <div id="mobile-controls">
+      <div class="d-pad">
+        <button id="btn-up" class="d-btn">▲</button>
+        <button id="btn-down" class="d-btn">▼</button>
+        <button id="btn-left" class="d-btn">◀</button>
+        <button id="btn-right" class="d-btn">▶</button>
+      </div>
+      <div class="action-pad">
+        <div class="quick-actions-row">
+          <button id="btn-kiss" class="quick-btn" title="Beijinho no Luca (B)">💋</button>
+          <button id="btn-bouquet" class="quick-btn" title="Dar Buquê de Rosas para o Luca (R)">🌹</button>
+          <button id="btn-feed" class="quick-btn" title="Dar Petisco para o Pet (F)">🍖</button>
+          <button id="btn-hand" class="quick-btn" title="Andar de Mãos Dadas (H)">🤝</button>
+          <button id="btn-quick-album" class="quick-btn" title="Abrir Álbum de Fotos (P)">📸</button>
+        </div>
+        <button id="btn-action">
+          <span id="btn-action-icon">❤️</span>
+          <span id="btn-action-text">AÇÃO</span>
+        </button>
+      </div>
+    </div>
+  </main>
+
+  <!-- MODAL: Álbum Completo de Fotos das Nossas Memórias -->
+  <div id="album-modal" class="modal-overlay">
+    <div class="album-modal-content">
+      <div class="album-modal-header">
+        <div class="album-title-wrap">
+          <h2>📸 Álbum de Fotos de 3 Anos • Bianca & Luca 💖</h2>
+          <p>Explore o mapa para encontrar as 11 fotos reais da nossa história de amor!</p>
+        </div>
+        <div class="album-progress-wrap">
+          <span id="album-modal-count-text">0 de 11 Fotos Reveladas</span>
+          <div class="achievements-progress-bar">
+            <div id="album-progress-fill" class="achievements-progress-fill" style="width: 0%;"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="album-modal-grid" id="album-modal-grid">
+        <!-- Preenchido dinamicamente com as fotos desbloqueadas ou cartões de mistério com dicas -->
+      </div>
+
+      <div class="album-modal-footer">
+        <button id="btn-unlock-all-photos" class="album-secondary-btn">✨ Liberar Todas as Fotos</button>
+        <button id="btn-close-album" class="modal-close-btn" style="width: auto; min-width: 220px;">Voltar para o Jogo ❤️</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: Revelação de Memória Individual (Polaroid) -->
+  <div id="memory-modal" class="modal-overlay">
+    <div class="polaroid-card">
+      <div class="polaroid-photo-frame clickable-photo" id="memory-frame-click">
+        <img id="memory-modal-img" src="assets/fotos/ano1.jpg" alt="Memória Especial">
+        <span class="zoom-badge">🔍 Clique para tela cheia</span>
+      </div>
+      <div class="polaroid-caption">
+        <h3 id="memory-modal-title">Ano 1: O Nosso Começo</h3>
+        <p id="memory-modal-desc">Descrição do momento marcante...</p>
+      </div>
+      <button id="btn-close-memory" class="modal-close-btn">Guardar no Coração ❤️</button>
+    </div>
+  </div>
+
+  <!-- MODAL FINAL: Baú dos 3 Anos (Galeria Completa, Álbum & Carta) -->
+  <div id="gallery-modal" class="modal-overlay">
+    <div class="gallery-modal-content">
+      <div class="gallery-header">
+        <h2>🎉 Feliz 3 Anos de Namoro! 🎉</h2>
+        <p>Você destrancou o Baú de Ouro com as memórias mais preciosas da nossa história!</p>
+      </div>
+
+      <!-- Grade Principal: A Linha do Tempo dos 3 Anos -->
+      <h3 class="section-title">✨ A Linha do Tempo dos Nossos 3 Anos ✨</h3>
+      <div class="timeline-grid">
+        <div class="timeline-card clickable-photo" data-title="🌿 Ano 1: O Começo do Nosso 'Para Sempre'" data-src="assets/fotos/ano1.jpg?v=3" data-desc="Cercados pela natureza e folhagens tropicais... Você deslumbrante de vestido preto e eu fazendo o pedido mais certeiro e feliz da minha vida!">
+          <div class="photo-wrapper">
+            <img id="card-img-1" src="assets/fotos/ano1.jpg?v=3" alt="Ano 1 - Restaurante Natureza">
+            <span class="zoom-badge">🔍 Clique para ampliar</span>
+          </div>
+          <div class="timeline-card-body">
+            <h4>🌿 Ano 1: O Pedido de Namoro</h4>
+            <p>Nosso começo cercados pela natureza! Você linda de vestido preto e eu fazendo a melhor escolha de toda a minha vida.</p>
+          </div>
+        </div>
+
+        <div class="timeline-card clickable-photo" data-title="❄️ Ano 2: Santiago do Chile & Valle Nevado" data-src="assets/fotos/ano2.jpg?v=3" data-desc="Aquele beijo inesquecível no mirante com toda a cidade e a Cordilheira dos Andes ao fundo! Conhecendo a neve juntos, rindo no frio e nos aquecendo com o nosso amor!">
+          <div class="photo-wrapper">
+            <img id="card-img-2" src="assets/fotos/ano2.jpg?v=3" alt="Ano 2 - Chile">
+            <span class="zoom-badge">🔍 Clique para ampliar</span>
+          </div>
+          <div class="timeline-card-body">
+            <h4>❄️ Ano 2: Santiago do Chile</h4>
+            <p>O beijo mais marcante no mirante com a Cordilheira dos Andes ao fundo e a neve aos nossos pés!</p>
+          </div>
+        </div>
+
+        <div class="timeline-card clickable-photo" data-title="✨ Ano 3: Nosso Lar & Piscina Sob as Estrelas" data-src="assets/fotos/ano3.jpg?v=3" data-desc="Nós dois de branco juntinhos na piscina iluminada com luzinhas ao luar, celebrando cada conquista e os 3 anos mais felizes da minha existência!">
+          <div class="photo-wrapper">
+            <img id="card-img-3" src="assets/fotos/ano3.jpg?v=3" alt="Ano 3 - Piscina e Estrelas">
+            <span class="zoom-badge">🔍 Clique para ampliar</span>
+          </div>
+          <div class="timeline-card-body">
+            <h4>✨ Ano 3: Nosso Lar & Estrelas</h4>
+            <p>Nós dois de branco na beira da piscina iluminada com luzinhas, comemorando cada momento e sonhando com o futuro.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Carta Emocionante do Luca para a Bianca -->
+      <div class="love-letter-box">
+        <h3>💌 Uma Cartinha para Minha Loirinha dos Olhos Pretos</h3>
+        <p>
+          Bianca, meu amor, nem acredito que já se passaram <strong>3 anos inteiros</strong> desde aquele dia em que decidimos caminhar lado a lado.
+        </p>
+        <p>
+          Cada dia com você é uma aventura nova e inesquecível: desde cruzar a Cordilheira dos Andes para ver a neve em Santiago, fazer massa caseira com farinha nas bochechas, rir com chapéus mexicanos gigantes, até as noites mais simples e perfeitas de branco na piscina, com a Zara e a Jully fazendo bagunça com a gente.
+        </p>
+        <p>
+          Quando você me pergunta com aquele jeitinho dengo <em>"Você me ama?"</em>, a resposta sempre foi e sempre será: <strong>Mais do que tudo no mundo!</strong> Você é a mulher da minha vida, minha companheira de risadas, de festas, de viagens e de todos os meus sonhos.
+        </p>
+        <p style="font-weight: 700; color: #ff7597; font-size: 1.05rem;">
+          Feliz 3 anos de namoro! Que venham mais 30, 300 anos ao seu lado. Te amo infinitamente, minha loirinha! ❤️<br>
+          <span style="font-size: 0.9rem; color: #ffe899;">Com todo o meu amor, do seu loiro, Luca.</span>
+        </p>
+      </div>
+
+      <!-- Álbum Completo de Aventuras (As outras 8 Fotos Reais do Casal!) -->
+      <div class="full-album-section">
+        <h3 class="section-title">📸 Nosso Álbum de Aventuras & Momentos Marcantes 📸</h3>
+        <p class="album-subtitle">Clique em qualquer foto para ver em tamanho expandido!</p>
+
+        <div class="album-grid">
+          <div class="album-card clickable-photo" data-title="🍝 Amor É Massa!" data-src="assets/fotos/massa.jpg?v=3" data-desc="Nós dois de avental 'Amor é Massa' preparando macarrão artesanal, brindando com Aperol Spritz e farinha na bochecha!">
+            <img src="assets/fotos/massa.jpg?v=3" alt="Cozinhando Massa">
+            <div class="album-card-info">
+              <h5>🍝 Amor É Massa!</h5>
+              <span>Massa artesanal & Aperol</span>
+            </div>
+          </div>
+
+          <div class="album-card clickable-photo" data-title="🌅 Pôr do Sol no Lago" data-src="assets/fotos/pordosol.jpg?v=3" data-desc="Céu cor-de-rosa deslumbrante no quiosque do lago. Curtindo o entardecer juntinhos e estilosos com óculos escuros!">
+            <img src="assets/fotos/pordosol.jpg?v=3" alt="Pôr do Sol no Lago">
+            <div class="album-card-info">
+              <h5>🌅 Pôr do Sol no Lago</h5>
+              <span>Entardecer dourado</span>
+            </div>
+          </div>
+
+          <div class="album-card clickable-photo" data-title="🥂 Noite de Gala" data-src="assets/fotos/gala.jpg?v=3" data-desc="Você maravilhosa de vestido rosa choque e eu de terno cinza, completamente apaixonado pelo seu sorriso a noite inteira!">
+            <img src="assets/fotos/gala.jpg?v=3" alt="Festa de Gala">
+            <div class="album-card-info">
+              <h5>🥂 Noite de Gala</h5>
+              <span>Nosso momento mais chique</span>
+            </div>
+          </div>
+
+          <div class="album-card clickable-photo" data-title="🌮 Risadas Mexicanas" data-src="assets/fotos/mexicano.jpg?v=3" data-desc="A gente rindo até a barriga doer com os sombreros gigantes de mariachi! As melhores risadas da vida são com você!">
+            <img src="assets/fotos/mexicano.jpg?v=3" alt="Restaurante Mexicano">
+            <div class="album-card-info">
+              <h5>🌮 Risadas Mexicanas</h5>
+              <span>Alegria pura e espontânea</span>
+            </div>
+          </div>
+
+          <div class="album-card clickable-photo" data-title="🎃 Chucky & Sua Noiva" data-src="assets/fotos/halloween1.jpg?v=3" data-desc="A melhor fantasia de casal de todos os tempos! Chucky e sua companheira perfeita de aventuras!">
+            <img src="assets/fotos/halloween1.jpg?v=3" alt="Halloween Chucky">
+            <div class="album-card-info">
+              <h5>🎃 Chucky & Sua Noiva</h5>
+              <span>Halloween icônico</span>
+            </div>
+          </div>
+
+          <div class="album-card clickable-photo" data-title="🧟 Zumbis Apaixonados" data-src="assets/fotos/halloween2.jpg?v=3" data-desc="Com você eu encaro até o apocalipse zumbi! Sempre prontos para entrar em qualquer brincadeira juntos!">
+            <img src="assets/fotos/halloween2.jpg?v=3" alt="Festa Fantasia Zumbi">
+            <div class="album-card-info">
+              <h5>🧟 Zumbis Apaixonados</h5>
+              <span>Parceria em tudo</span>
+            </div>
+          </div>
+
+          <div class="album-card clickable-photo" data-title="💖 O Abraço Mais Gostoso" data-src="assets/fotos/abraco.jpg?v=3" data-desc="No meio da multidão e da música, o melhor lugar do mundo sempre é e sempre será dentro do seu abraço apertado!">
+            <img src="assets/fotos/abraco.jpg?v=3" alt="Abraço no Festival">
+            <div class="album-card-info">
+              <h5>💖 O Abraço Mais Gostoso</h5>
+              <span>Meu porto seguro</span>
+            </div>
+          </div>
+
+          <div class="album-card clickable-photo" data-title="🧢 Nossa Cumplicidade" data-src="assets/fotos/selfie.jpg?v=3" data-desc="Selfie fofa de boné NYC e sorriso carinhoso. Te amar nos dias mais simples é o que torna tudo perfeito!">
+            <img src="assets/fotos/selfie.jpg?v=3" alt="Selfie de Boné">
+            <div class="album-card-info">
+              <h5>🧢 Nossa Cumplicidade</h5>
+              <span>Amor no dia a dia</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <button id="btn-close-gallery" class="modal-close-btn" style="margin-top: 24px;">Continuar Explorando o Joguinho ✨</button>
+    </div>
+  </div>
+
+  <!-- MODAL: Lightbox para visualização de foto em tela cheia -->
+  <div id="lightbox-modal" class="modal-overlay">
+    <div class="lightbox-content">
+      <button id="btn-close-lightbox" class="lightbox-close">✕</button>
+      <div class="lightbox-image-frame">
+        <img id="lightbox-img" src="assets/fotos/ano1.jpg?v=3" alt="Foto Ampliada">
+      </div>
+      <div class="lightbox-caption">
+        <h3 id="lightbox-title">Título da Foto</h3>
+        <p id="lightbox-desc">Descrição do momento inesquecível...</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: Livro de Conquistas dos 3 Anos -->
+  <div id="achievements-modal" class="modal-overlay">
+    <div class="achievements-modal-content">
+      <div class="achievements-header">
+        <h2>🏆 Livro de Conquistas do Casal</h2>
+        <p>Momentos especiais e gestos de amor que eternizam nossos 3 anos juntos!</p>
+        <div class="achievements-progress-bar">
+          <div id="achievements-progress-fill" class="achievements-progress-fill"></div>
+        </div>
+      </div>
+
+      <div class="achievements-grid" id="achievements-grid">
+        <!-- Itens de conquista preenchidos dinamicamente -->
+      </div>
+
+      <button id="btn-close-achievements" class="modal-close-btn">Voltar para a Aventura ❤️</button>
+    </div>
+  </div>
+
+  <!-- Player Oculto da Trilha Sonora (Romântico 2 - Aka Rasta, Veigh) -->
+  <div id="youtube-player-container">
+    <div id="yt-player"></div>
+  </div>
+
+  <!-- Scripts -->
+  <script type="module">
+    import { GameEngine } from './game.js';
+    import { sound } from './audio.js';
+
+    // Iniciar Motor do Jogo
+    window.game = new GameEngine();
+
+    // Avançar diálogo ao clicar diretamente na caixa
+    const dialogueBox = document.getElementById('dialogue-box');
+    if (dialogueBox) {
+      dialogueBox.addEventListener('click', () => {
+        window.game.handleAction();
+      });
+    }
+
+    // Ações dos botões rápidos touch
+    const btnKiss = document.getElementById('btn-kiss');
+    if (btnKiss) {
+      btnKiss.addEventListener('click', (e) => {
+        e.preventDefault();
+        window.game.triggerKiss();
+      });
+    }
+
+    const btnFeed = document.getElementById('btn-feed');
+    if (btnFeed) {
+      btnFeed.addEventListener('click', (e) => {
+        e.preventDefault();
+        window.game.triggerFeedPet();
+      });
+    }
+
+    const btnHand = document.getElementById('btn-hand');
+    if (btnHand) {
+      btnHand.addEventListener('click', (e) => {
+        e.preventDefault();
+        window.game.toggleHoldHands();
+      });
+    }
+
+    // Ação do Buquê de Rosas
+    const btnBouquet = document.getElementById('btn-bouquet');
+    if (btnBouquet) {
+      btnBouquet.addEventListener('click', (e) => {
+        e.preventDefault();
+        window.game.triggerGiveBouquet();
+      });
+    }
+
+    // Modal do Álbum de Fotos
+    const btnOpenAlbum = document.getElementById('btn-open-album');
+    const btnQuickAlbum = document.getElementById('btn-quick-album');
+    const openAlbumHandler = (e) => {
+      if (e) e.preventDefault();
+      window.game.openAlbumModal();
+    };
+    if (btnOpenAlbum) {
+      btnOpenAlbum.addEventListener('click', openAlbumHandler);
+      btnOpenAlbum.addEventListener('touchstart', openAlbumHandler);
+    }
+    if (btnQuickAlbum) {
+      btnQuickAlbum.addEventListener('click', openAlbumHandler);
+      btnQuickAlbum.addEventListener('touchstart', openAlbumHandler);
+    }
+
+    const btnCloseAlbum = document.getElementById('btn-close-album');
+    if (btnCloseAlbum) {
+      btnCloseAlbum.addEventListener('click', () => {
+        document.getElementById('album-modal').classList.remove('active');
+      });
+    }
+
+    const btnUnlockAll = document.getElementById('btn-unlock-all-photos');
+    if (btnUnlockAll) {
+      btnUnlockAll.addEventListener('click', () => {
+        window.game.unlockAllPhotos();
+      });
+    }
+
+    // Zoom direto da Polaroid de Memória para Lightbox
+    const memoryFrameClick = document.getElementById('memory-frame-click');
+    if (memoryFrameClick) {
+      memoryFrameClick.addEventListener('click', () => {
+        const img = document.getElementById('memory-modal-img');
+        const title = document.getElementById('memory-modal-title');
+        const desc = document.getElementById('memory-modal-desc');
+        if (img && title && desc) {
+          const lightboxModal = document.getElementById('lightbox-modal');
+          const lightboxImg = document.getElementById('lightbox-img');
+          const lightboxTitle = document.getElementById('lightbox-title');
+          const lightboxDesc = document.getElementById('lightbox-desc');
+          if (lightboxModal && lightboxImg) {
+            lightboxImg.src = img.src;
+            lightboxTitle.innerText = title.innerText;
+            lightboxDesc.innerText = desc.innerText;
+            lightboxModal.classList.add('active');
+          }
+        }
+      });
+    }
+
+    // Modal de Conquistas
+    const btnAchievements = document.getElementById('btn-achievements');
+    if (btnAchievements) {
+      const openAchievements = (e) => {
+        if (e) e.preventDefault();
+        window.game.openAchievementsModal();
+      };
+      btnAchievements.addEventListener('click', openAchievements);
+      btnAchievements.addEventListener('touchstart', openAchievements);
+    }
+
+    const btnCloseAchievements = document.getElementById('btn-close-achievements');
+    if (btnCloseAchievements) {
+      const closeAchievements = (e) => {
+        if (e) e.preventDefault();
+        document.getElementById('achievements-modal').classList.remove('active');
+      };
+      btnCloseAchievements.addEventListener('click', closeAchievements);
+      btnCloseAchievements.addEventListener('touchstart', closeAchievements);
+    }
+
+    // Fechar modais ao clicar no botão de fechar ou fundo
+    document.getElementById('btn-close-memory').addEventListener('click', () => {
+      document.getElementById('memory-modal').classList.remove('active');
+    });
+
+    document.getElementById('btn-close-gallery').addEventListener('click', () => {
+      document.getElementById('gallery-modal').classList.remove('active');
+    });
+
+    ['memory-modal', 'gallery-modal', 'album-modal', 'achievements-modal'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) {
+        el.addEventListener('click', (e) => {
+          if (e.target === el) {
+            el.classList.remove('active');
+          }
+        });
+      }
+    });
+
+    // Tecla ESC para fechar qualquer modal aberto
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        document.querySelectorAll('.modal-overlay.active').forEach(m => m.classList.remove('active'));
+      }
+    });
+
+    // Lightbox para ver qualquer foto em tamanho expandido
+    const lightboxModal = document.getElementById('lightbox-modal');
+    const lightboxImg = document.getElementById('lightbox-img');
+    const lightboxTitle = document.getElementById('lightbox-title');
+    const lightboxDesc = document.getElementById('lightbox-desc');
+    const btnCloseLightbox = document.getElementById('btn-close-lightbox');
+
+    document.querySelectorAll('.clickable-photo').forEach(card => {
+      card.addEventListener('click', (e) => {
+        const title = card.getAttribute('data-title');
+        const src = card.getAttribute('data-src');
+        const desc = card.getAttribute('data-desc');
+
+        if (lightboxModal && lightboxImg && lightboxTitle && lightboxDesc) {
+          lightboxImg.src = src;
+          lightboxTitle.innerText = title;
+          lightboxDesc.innerText = desc;
+          lightboxModal.classList.add('active');
+        }
+      });
+    });
+
+    if (btnCloseLightbox) {
+      btnCloseLightbox.addEventListener('click', () => {
+        lightboxModal.classList.remove('active');
+      });
+    }
+
+    if (lightboxModal) {
+      lightboxModal.addEventListener('click', (e) => {
+        if (e.target === lightboxModal) {
+          lightboxModal.classList.remove('active');
+        }
+      });
+    }
+
+    // Carregar YouTube IFrame API para tocar Romântico 2 (A__ITOPQtR4)
+    window.onYouTubeIframeAPIReady = function() {
+      const player = new YT.Player('yt-player', {
+        height: '100',
+        width: '100',
+        videoId: 'A__ITOPQtR4',
+        playerVars: {
+          autoplay: 0,
+          loop: 1,
+          playlist: 'A__ITOPQtR4',
+          controls: 0,
+          showinfo: 0,
+          modestbranding: 1
+        },
+        events: {
+          onReady: (event) => {
+            sound.initYouTube(event.target);
+            event.target.setVolume(75);
+          }
+        }
+      });
+    };
+
+    const tag = document.createElement('script');
+    tag.src = "https://www.youtube.com/iframe_api";
+    const firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+    // Botão de Música na barra superior
+    const musicBtn = document.getElementById('music-btn');
+    musicBtn.addEventListener('click', () => {
+      const isPlaying = sound.toggleMusic();
+      if (isPlaying) {
+        musicBtn.classList.remove('music-paused');
+      } else {
+        musicBtn.classList.add('music-paused');
+      }
+    });
+
+    // Iniciar áudio no primeiro clique em qualquer lugar da tela
+    window.addEventListener('click', () => {
+      sound.init();
+    }, { once: true });
+  </script>
+</body>
+</html>

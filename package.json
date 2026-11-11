@@ -1,0 +1,13 @@
+{
+  "name": "jogo-bianca-3-anos",
+  "version": "1.0.0",
+  "description": "Joguinho 2D Top-Down comemorativo de 3 anos de namoro de Luca e Bianca",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "author": "Luca",
+  "license": "ISC"
+}
